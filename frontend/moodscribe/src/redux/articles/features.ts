@@ -1,13 +1,7 @@
-import axios from 'axios';
 import { ArticleValues } from '../../utils/types';
-import { baseUrlApi } from '../../axiosHelper';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { AppThunk } from '../store';
-import { handleErrors } from '..';
-
-const base = axios.create({
-  baseURL: baseUrlApi,
-});
+import { articles as defaultArticles } from '../../utils/constants/articles';
 
 // Get Articles
 export interface ArticlesState {
@@ -18,7 +12,7 @@ export interface ArticlesState {
 }
 
 const ArticlesInitialState: ArticlesState = {
-  articles: [],
+  articles: defaultArticles,
   success: false,
   loading: false,
   error: '',
@@ -61,13 +55,12 @@ export const {
 } = articlesSlice.actions;
 export const articlesReducer = articlesSlice.reducer;
 
-export const getArticles = (): AppThunk => async (dispatch) => {
+export const getArticles = (): AppThunk => (dispatch) => {
   dispatch(articlesStart());
   try {
-    const response = await base.get('/articles');
-    dispatch(articlesSuccess(response.data));
+    dispatch(articlesSuccess(defaultArticles));
   } catch (error) {
-    dispatch(articlesFailure(handleErrors(error)));
+    dispatch(articlesFailure('Unable to load articles'));
   }
 };
 
@@ -125,12 +118,14 @@ export const articlesSearchReducer = articlesSearchSlice.reducer;
 
 export const searchArticles =
   (data: string): AppThunk =>
-  async (dispatch) => {
+  (dispatch) => {
     dispatch(articlesSearchStart());
     try {
-      const response = await base.post('/articles', { search: data });
-      dispatch(articlesSearchSuccess(response.data));
+      const results = defaultArticles.filter((article) =>
+        article.title.toLowerCase().includes(data.toLowerCase())
+      );
+      dispatch(articlesSearchSuccess(results));
     } catch (error) {
-      dispatch(articlesSearchFailure(handleErrors(error)));
+      dispatch(articlesSearchFailure('Unable to search articles'));
     }
   };

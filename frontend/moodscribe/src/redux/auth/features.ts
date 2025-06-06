@@ -1,15 +1,7 @@
-import axios from 'axios';
 import { AppThunk } from '../store';
-import { baseUrlApi } from '../../axiosHelper';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { SigninValues, SignupValues, UserValues } from '../../utils/types';
-import { handleErrors } from '..';
-import { jwtDecode } from 'jwt-decode';
-import { authHeader } from '../../axiosHelper/services/auth-header';
-
-const base = axios.create({
-  baseURL: baseUrlApi,
-});
+import { v4 as uuidv4 } from 'uuid';
 
 // Signup
 export interface UserRegistration {
@@ -63,18 +55,15 @@ export const signupReducer = signupSlice.reducer;
 
 export const signup =
   (userData: SignupValues): AppThunk =>
-  async (dispatch) => {
+  (dispatch) => {
     dispatch(signupStart());
     try {
-      const response = await base.post<SignupValues>('/signup', userData, {
-        headers: {
-          'Content-Type': 'application/json',
-          accept: 'application/json',
-        },
-      });
-      dispatch(signupSuccess(response.data));
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      users.push(userData);
+      localStorage.setItem('users', JSON.stringify(users));
+      dispatch(signupSuccess(userData));
     } catch (error) {
-      dispatch(signupFailure(handleErrors(error)));
+      dispatch(signupFailure('Unable to register user'));
     }
   };
 
@@ -115,9 +104,8 @@ const signinSlice = createSlice({
       state.token = action.payload;
       state.isAuthenticated = true;
 
-      const decoded: { exp: number } = jwtDecode(action.payload);
-      state.expirationTime = decoded.exp;
-      localStorage.removeItem('token');
+      const expiration = localStorage.getItem('expirationTime');
+      state.expirationTime = expiration ? parseInt(expiration) : null;
     },
 
     signinFailure(state, action) {
@@ -138,6 +126,8 @@ const signinSlice = createSlice({
       state.isAuthenticated = false;
       state.expirationTime = null;
       localStorage.removeItem('token');
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('expirationTime');
     },
   },
 });
@@ -154,20 +144,26 @@ export const signinReducer = signinSlice.reducer;
 // Async action creator for signin
 export const signin =
   (userData: SigninValues): AppThunk =>
-  async (dispatch) => {
+  (dispatch) => {
     dispatch(signinStart());
     try {
-      const response = await base.post('/login', userData, {
-        headers: {
-          'Content-Type': 'application/json',
-          accept: 'application/json',
-        },
-      });
-      const token = response.data.token;
-      dispatch(signinSuccess(token));
-      localStorage.setItem('token', token);
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const user = users.find(
+        (u: SignupValues) =>
+          u.email === userData.email && u.password === userData.password
+      );
+      if (user) {
+        const token = uuidv4();
+        const expirationTime = Math.floor(Date.now() / 1000) + 3600;
+        localStorage.setItem('token', token);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        localStorage.setItem('expirationTime', expirationTime.toString());
+        dispatch(signinSuccess(token));
+      } else {
+        dispatch(signinFailure('Invalid credentials'));
+      }
     } catch (error) {
-      dispatch(signinFailure(handleErrors(error)));
+      dispatch(signinFailure('Unable to login'));
     }
   };
 
@@ -202,12 +198,14 @@ const userSlice = createSlice({
 export const { userStart, userSuccess, userFailure } = userSlice.actions;
 export const userReducer = userSlice.reducer;
 
-export const getUser = (): AppThunk => async (dispatch) => {
+export const getUser = (): AppThunk => (dispatch) => {
   dispatch(userStart());
   try {
-    const response = await base.get('/user', authHeader());
-    dispatch(userSuccess(response.data));
+    const user = localStorage.getItem('currentUser');
+    if (user) {
+      dispatch(userSuccess(JSON.parse(user)));
+    }
   } catch (error) {
-    dispatch(userFailure(handleErrors(error)));
+    dispatch(userFailure('Unable to fetch user'));
   }
 };

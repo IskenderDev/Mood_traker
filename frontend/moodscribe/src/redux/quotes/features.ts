@@ -1,15 +1,20 @@
-import axios from 'axios';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { quotes } from '../../utils/constants/quotes';
 import { Quote, QuoteItem } from '../../utils/types';
 import { AppThunk } from '../store';
-import { handleErrors } from '..';
-import { authHeader } from '../../axiosHelper/services/auth-header';
-import { baseUrlApi } from '../../axiosHelper';
+import { v4 as uuidv4 } from 'uuid';
 
-const base = axios.create({
-  baseURL: baseUrlApi,
-});
+const STORAGE_KEY = 'quotes';
+
+const getLocalQuotes = (): QuoteItem[] => {
+  const data = localStorage.getItem(STORAGE_KEY);
+  return data ? JSON.parse(data) : [];
+};
+
+const saveQuotes = (list: QuoteItem[]) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+};
+
 
 //GetQuotes State
 interface GetQuotesValues {
@@ -19,7 +24,7 @@ interface GetQuotesValues {
 }
 
 const defaultQuote = {
-  quote: [],
+  quote: [...quotes.quote, ...getLocalQuotes()],
 };
 
 const getQuotesState: GetQuotesValues = {
@@ -39,7 +44,7 @@ const quotesSlice = createSlice({
     fetchQuotesSuccess: (state, action: { payload: Quote }) => {
       state.status = 'succeeded';
       state.quotes = {
-        quote: [...quotes.quote, ...action.payload.quote],
+        quote: action.payload.quote,
       };
     },
     fetchQuotesFailure: (state, action) => {
@@ -58,13 +63,13 @@ export const { fetchQuotesRequest, fetchQuotesSuccess, fetchQuotesFailure } =
   quotesSlice.actions;
 export const quotesReducer = quotesSlice.reducer;
 
-export const fetchQuotes = (): AppThunk => async (dispatch) => {
+export const fetchQuotes = (): AppThunk => (dispatch) => {
   dispatch(fetchQuotesRequest());
   try {
-    const response = await base.get('/quotes', authHeader());
-    dispatch(fetchQuotesSuccess(response.data));
+    const stored = getLocalQuotes();
+    dispatch(fetchQuotesSuccess({ quote: [...quotes.quote, ...stored] }));
   } catch (error) {
-    dispatch(fetchQuotesFailure(handleErrors(error)));
+    dispatch(fetchQuotesFailure('Unable to fetch quotes'));
   }
 };
 
@@ -105,14 +110,20 @@ export const quoteReducer = quoteSlice.reducer;
 
 export const addQuote =
   (quote: QuoteItem): AppThunk =>
-  async (dispatch) => {
+  (dispatch) => {
     dispatch(addQuoteRequest());
     try {
-      const response = await base.post('/quote', quote, authHeader());
-      dispatch(addQuoteSuccess(response.data));
-      dispatch(addQuoteSuccess(response.data));
+      const newQuote = { ...quote, _id: uuidv4() };
+      const updated = [...getLocalQuotes(), newQuote];
+      saveQuotes(updated);
+      dispatch(addQuoteSuccess());
+      dispatch(
+        quotesSlice.actions.fetchQuotesSuccess({
+          quote: [...quotes.quote, ...updated],
+        })
+      );
     } catch (error) {
-      dispatch(addQuoteFailure(handleErrors(error)));
+      dispatch(addQuoteFailure('Unable to add quote'));
     }
   };
 
@@ -155,10 +166,11 @@ export const deleteQuoteReducer = deleteQuoteSlice.reducer;
 
 export const deleteQuote =
   (id: string): AppThunk =>
-  async (dispatch) => {
+  (dispatch) => {
     try {
-      const response = await base.delete(`/quote/${id}`, authHeader());
-      dispatch(deleteQuoteSuccess(response.data));
+      const updated = getLocalQuotes().filter((q) => q._id !== id);
+      saveQuotes(updated);
+      dispatch(deleteQuoteSuccess());
       dispatch(quotesSlice.actions.deleteQuoteSuccess(id));
     } catch (error) {
       console.error('Failed to delete quote:', error);

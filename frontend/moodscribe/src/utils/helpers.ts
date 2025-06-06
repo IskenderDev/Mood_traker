@@ -1,16 +1,8 @@
-import { JwtPayload } from './types';
-import { jwtDecode } from 'jwt-decode';
-
-export const isTokenExpired = (token: string): boolean => {
-  try {
-    const decoded: JwtPayload = jwtDecode(token);
-    const currentTime = Date.now() / 1000;
-    return decoded.exp < currentTime;
-  } catch (error) {
-    console.error('Error decoding token:', error);
-    // Treat invalid token as expired
-    return true;
-  }
+export const isTokenExpired = (_token: string): boolean => {
+  const expiration = localStorage.getItem('expirationTime');
+  if (!expiration) return true;
+  const currentTime = Date.now() / 1000;
+  return parseInt(expiration) < currentTime;
 };
 
 export const formatDate = (dateString: string): string => {
