@@ -19,13 +19,13 @@ const Article: FC<Props> = ({ article }) => {
         {article.title}
       </p>
       <p className='py-2'>
-        Read more{' '}
+        Читать далее{' '}
         <Link
           to={article.url}
           target='_blank'
           className='text-teal-100 hover:text-teal-400 font-bold'
         >
-          here
+          здесь
         </Link>
       </p>
     </div>

@@ -59,10 +59,10 @@ const History = () => {
                       dispatch(deleteJournal(journal._id as string))
                     }
                   >
-                    Delete
+                    Удалить
                   </button>
                   <Tooltip content={journal.mood.name} placement='top'>
-                    <span className=''>Day:</span>
+                    <span className=''>День:</span>
                     <Icon
                       icon={journal.mood.icon}
                       style={{
@@ -80,7 +80,7 @@ const History = () => {
       ) : (
         <div className='flex justify-center items-center h-96'>
           <p className='text-lg bg-gradient-to-r from-teal-100 via-amber-500 to-cyan-400 bg-clip-text text-transparent'>
-            Your Journal List is empty. Create a new entry?
+            Ваш список записей пуст. Создать новую запись?
           </p>
         </div>
       )}

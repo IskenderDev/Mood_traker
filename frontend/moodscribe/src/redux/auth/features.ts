@@ -63,7 +63,7 @@ export const signup =
       localStorage.setItem('users', JSON.stringify(users));
       dispatch(signupSuccess(userData));
     } catch (error) {
-      dispatch(signupFailure('Unable to register user'));
+      dispatch(signupFailure('Не удалось зарегистрировать пользователя'));
     }
   };
 
@@ -160,10 +160,10 @@ export const signin =
         localStorage.setItem('expirationTime', expirationTime.toString());
         dispatch(signinSuccess(token));
       } else {
-        dispatch(signinFailure('Invalid credentials'));
+        dispatch(signinFailure('Неверные учетные данные'));
       }
     } catch (error) {
-      dispatch(signinFailure('Unable to login'));
+      dispatch(signinFailure('Не удалось выполнить вход'));
     }
   };
 
@@ -206,6 +206,6 @@ export const getUser = (): AppThunk => (dispatch) => {
       dispatch(userSuccess(JSON.parse(user)));
     }
   } catch (error) {
-    dispatch(userFailure('Unable to fetch user'));
+    dispatch(userFailure('Не удалось получить пользователя'));
   }
 };

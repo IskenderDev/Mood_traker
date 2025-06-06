@@ -69,7 +69,7 @@ export const fetchQuotes = (): AppThunk => (dispatch) => {
     const stored = getLocalQuotes();
     dispatch(fetchQuotesSuccess({ quote: [...quotes.quote, ...stored] }));
   } catch (error) {
-    dispatch(fetchQuotesFailure('Unable to fetch quotes'));
+    dispatch(fetchQuotesFailure('Не удалось загрузить цитаты'));
   }
 };
 
@@ -123,7 +123,7 @@ export const addQuote =
         })
       );
     } catch (error) {
-      dispatch(addQuoteFailure('Unable to add quote'));
+      dispatch(addQuoteFailure('Не удалось добавить цитату'));
     }
   };
 

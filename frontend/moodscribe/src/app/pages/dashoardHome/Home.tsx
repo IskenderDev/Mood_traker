@@ -72,7 +72,7 @@ const Home: FC = () => {
             />
           </h1>
           <p className='text-lg py-2 tracking-wider'>
-            Document your day, Discover your mood.
+            Записывайте свой день, открывайте своё настроение.
           </p>
         </section>
         <section className='sm:grid grid-cols-auto-fit-100 gap-4'>
@@ -102,7 +102,7 @@ const Home: FC = () => {
                 <p className='px-2 py-3'>
                   {idx === 0 ? (
                     <span className='block font-semibold text-lg text-gray-200'>
-                      Hi {userName}
+                      Привет, {userName}
                     </span>
                   ) : null}
                   {quote.quote}
@@ -122,7 +122,7 @@ const Home: FC = () => {
             className='p-4 bg-gray-700 bg-opacity-65 shadow-lg rounded-sm hover:bg-slate-700 transition-all duration-500 ease-out'
           >
             <label htmlFor='newQuote' className='block'>
-              Add a new quote?
+              Добавить новую цитату?
             </label>
             <input
               type='text'
@@ -136,7 +136,7 @@ const Home: FC = () => {
               type='submit'
               className='text-center bg-cyan-700 hover:bg-cyan-500 py-2 px-4'
             >
-              Add Quote
+              Добавить цитату
             </button>
           </form>
         </section>

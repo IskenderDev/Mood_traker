@@ -60,7 +60,7 @@ export const getArticles = (): AppThunk => (dispatch) => {
   try {
     dispatch(articlesSuccess(defaultArticles));
   } catch (error) {
-    dispatch(articlesFailure('Unable to load articles'));
+    dispatch(articlesFailure('Не удалось загрузить статьи'));
   }
 };
 
@@ -126,6 +126,6 @@ export const searchArticles =
       );
       dispatch(articlesSearchSuccess(results));
     } catch (error) {
-      dispatch(articlesSearchFailure('Unable to search articles'));
+      dispatch(articlesSearchFailure('Не удалось выполнить поиск статей'));
     }
   };

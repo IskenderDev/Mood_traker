@@ -28,7 +28,7 @@ export const InputDateField: React.FC<InputDateFieldProps> = ({
   label,
   hasError,
   className,
-  placeholder = 'Select date',
+  placeholder = 'Выберите дату',
   isRequired,
   control,
   errorMessage,
@@ -67,7 +67,7 @@ export const InputDateField: React.FC<InputDateFieldProps> = ({
               autoComplete='off'
               showYearDropdown
               dropdownMode='select'
-              timeInputLabel='Time:'
+              timeInputLabel='Время:'
               showTimeInput
               // showTimeSelect
               // timeIntervals={1}
