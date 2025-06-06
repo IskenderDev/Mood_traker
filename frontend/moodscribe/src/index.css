@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+.customDatePickerWidth,
+.customDatePickerWidth > div.react-datepicker-wrapper,
+.customDatePickerWidth
+  > div
+  > div.react-datepicker__input-container
+  .customDatePickerWidth
+  > div
+  > div.react-datepicker__input-container
+  input {
+  width: 100%;
+}
+
+.react-datepicker__month-select,
+.react-datepicker__year-select {
+  font-size: small;
+  border: none;
+  padding: 2px 6px;
+}
+
+.react-datepicker__header__dropdown--select {
+  margin: 7px 2px 3px;
+}
+
+.react-datepicker-time__input {
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.react-datepicker-time__input:focus {
+  border: 2px solid #3992b3;
+  box-shadow: none;
+}
+
+[type='text']:focus,
+[type='password']:focus,
+select:focus,
+textarea:focus {
+  box-shadow: none;
+}
