@@ -1,57 +1,30 @@
-# MoodScribe
- MoodScribe is a user-friendly mental health journaling application designed to help individuals track their moods, reflect on their daily experiences, and gain insights into their emotional well-being. By recording daily journal entries and associating them with specific moods, users can visualize their emotional patterns over time and better understand the factors influencing their mental health.with specific moods, users can visualize their emotional patterns over time and better understand the factors influencing their mental health.
+# React + TypeScript + Vite
 
-## Architecture Overview
-***Frontend***: React + Vite + TS with Tailwind CSS for styling, Chart.js with react-chartjs-2 for mood visualization, React-hook-form with Yup validation, and Flowbite for components.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Data is stored locally using the browser's `localStorage`.
+Currently, two official plugins are available:
 
-***State Management***: Redux toolkit for managing application state.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-***APIs***: Integrated third-party APIs for fetching useful mental health articles.
+## Expanding the ESLint configuration
 
-## Technology Stack
-***Frontend***: React - Vite, Tailwind CSS, Typescript
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
+- Configure the top-level `parserOptions` property like this:
 
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
+```
 
-***State Management***: Redux toolkit
-
-***APIs***: News API
-
-***Charts***: Chart.js with react-chartjs-2
-
-
-### Prerequisites
-
-***Ensure you have the following installed:***
-
-    Node.js
-    npm (Node Package Manager)
-
-### Steps for Frontend
-
-##### Clone the repository:
-    git clone https://github.com/bammietop03/MoodScribe.git
-
-##### Navigate to the project directory:
-    cd /frontend/moodscribe
-
-##### Install the dependencies:
-    npm install
-
-##### Start the application:
-    npm run dev
-
-
-
-### Contributing
-##### Contributions are welcome! Please fork the repository and submit a pull request.
-    Fork the repository
-    Create a new branch (git checkout -b feature/your-feature)
-    Commit your changes (git commit -m 'Add some feature')
-    Push to the branch (git push origin feature/your-feature)
-    Open a pull request
-
-### License
-This project is licensed under the MIT License.
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
