@@ -83,7 +83,7 @@ const CustomInputField: FC<Props> = (
               <button
                 type='button'
                 onClick={handleShowPassword}
-                title={type === 'text' ? 'Hide password' : 'Show password'}
+                title={type === 'text' ? 'Скрыть пароль' : 'Показать пароль'}
                 className='absolute right-3 mt-1'
               >
                 {type === 'password' ? (
@@ -98,7 +98,7 @@ const CustomInputField: FC<Props> = (
       />
 
       {valid === 'success' && (name === 'password' || name === 'email') ? (
-        <span className='text-xs text-teal-300'>Perfect!</span>
+        <span className='text-xs text-teal-300'>Отлично!</span>
       ) : null}
 
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}

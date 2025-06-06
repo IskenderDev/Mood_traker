@@ -16,13 +16,13 @@ export const Header: FC = () => {
 
   const navItems = !token
     ? [
-        { name: 'Journal', href: '/dashboard' },
-        { name: 'Login', href: '/auth/signin' },
-        { name: 'Signup', href: '/auth/signup' },
+        { name: 'Дневник', href: '/dashboard' },
+        { name: 'Войти', href: '/auth/signin' },
+        { name: 'Регистрация', href: '/auth/signup' },
       ]
     : [
-        { name: 'Journal', href: '/dashboard' },
-        { name: 'Logout', href: '' },
+        { name: 'Дневник', href: '/dashboard' },
+        { name: 'Выйти', href: '' },
       ];
 
   return (

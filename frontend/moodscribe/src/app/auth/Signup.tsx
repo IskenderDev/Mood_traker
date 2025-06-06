@@ -14,16 +14,16 @@ import { clearSignupState, signup } from '../../redux/auth/features';
 
 const validationSchema = Yup.object().shape({
   fullName: Yup.string()
-    .required('Enter your name')
-    .min(3, 'Should contain minimum of 3 characters'),
+    .required('Введите имя')
+    .min(3, 'Должно содержать минимум 3 символа'),
   email: Yup.string()
-    .email('Wrong email format')
-    .required('Enter your email address'),
+    .email('Неверный формат электронной почты')
+    .required('Введите адрес электронной почты'),
   password: Yup.string()
-    .required('Enter your password')
+    .required('Введите пароль')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/,
-      'Password should contain 8 or more characters, at least a symbol, number, uppercase & lower case letters'
+      'Пароль должен содержать не менее 8 символов, включая символ, цифру, буквы верхнего и нижнего регистра'
     ),
 });
 
@@ -38,7 +38,7 @@ const Signup: FC = () => {
 
   useEffect(() => {
     if (success) {
-      toast.success("You've successfully registered", { id: toastId });
+      toast.success('Вы успешно зарегистрированы', { id: toastId });
       navigate('/auth/signin');
     }
   }, [navigate, success, toastId]);
@@ -77,15 +77,15 @@ const Signup: FC = () => {
       </Link>
 
       <div className='container mx-auto max-w-lg max-h-[640px] bg-bg-800 sm:p-14 p-10 m-6 shadow-xl shadow-stone-500 overflow-y-scroll'>
-        <h1 className='text-gray-400 text-lg text-center mb-14'>NEW ACCOUNT</h1>
+        <h1 className='text-gray-400 text-lg text-center mb-14'>НОВЫЙ АККАУНТ</h1>
         <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
           <InputField
-            label='FULL NAME'
+            label='ИМЯ'
             labelClass='text-[#e7c1a3] mt-9'
             type={'text'}
             control={control}
             registration={{ ...register('fullName') }}
-            placeholder='Enter your full name'
+            placeholder='Введите ваше имя'
             errorMessage={errors.fullName?.message}
             isRequired
             className='bg-transparent border-b border-gray-400 mt-2'
@@ -98,9 +98,9 @@ const Signup: FC = () => {
               getValues('email') && !errors.email?.message ? 'success' : ''
             }
             errorMessage={errors.email?.message}
-            label='EMAIL ADDRESS'
+            label='АДРЕС ЭЛЕКТРОННОЙ ПОЧТЫ'
             labelClass='text-[#e7c1a3] mt-9'
-            placeholder='Enter your email'
+            placeholder='Введите вашу почту'
             isRequired
             className='bg-transparent border-b border-gray-400 mt-2'
           />
@@ -108,9 +108,9 @@ const Signup: FC = () => {
             registration={{ ...register('password') }}
             type={showPassword ? 'text' : 'password'}
             control={control}
-            label='PASSWORD'
+            label='ПАРОЛЬ'
             labelClass='text-[#e7c1a3] mt-9'
-            placeholder='Enter your password'
+            placeholder='Введите пароль'
             valid={getValues('password') && !errors.password ? 'success' : ''}
             errorMessage={errors.password?.message}
             isRequired
@@ -127,16 +127,16 @@ const Signup: FC = () => {
                 className='inline-block h-7 w-7 mr-2 mb-1'
               />
             )}
-            CREATE ACCOUNT
+            СОЗДАТЬ АККАУНТ
           </button>
         </form>
         <p className='text-gray-400 mt-2'>
-          Already have an account? {'  '}
+          Уже есть аккаунт? {'  '}
           <Link
             to='/auth/signin'
             className='text-teal-100 hover:text-cyan-400 text-lg italic'
           >
-            Log in
+            Войти
           </Link>
         </p>
       </div>

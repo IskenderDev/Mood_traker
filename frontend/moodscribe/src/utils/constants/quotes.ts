@@ -5,23 +5,23 @@ export const quotes: Quote = {
   quote: [
     {
       quote:
-        "Don't limit yourself. Many people limit themselves to what they think they can do. You can go as far as your mind lets you. What you believe, remember, you can achieve.",
+        "Не ограничивайте себя. Многие ограничиваются тем, что, как им кажется, способны сделать. Вы можете идти настолько далеко, насколько позволяет ваш разум. Помните: во что верите, того можете добиться.",
       icon: 'game-icons:inspiration',
       color: '#ffa8B6',
     },
     {
-      quote: 'For a gallant spirit there can never be defeat.',
+      quote: 'Доблестному духу никогда не бывает поражения.',
       icon: 'twemoji:fire',
       color: '#8458B3',
     },
     {
       quote:
-        'Happiness resides not in possessions, and not in gold, happiness dwells in the soul.',
+        'Счастье не в богатстве и не в золоте, счастье живёт в душе.',
       icon: 'icomoon-free:happy2',
       color: '#51e2f5',
     },
     {
-      quote: "Believe you can and you're halfway there.",
+      quote: "Верьте, что сможете, и вы уже на полпути.",
       icon: 'mdi:hope',
       color: '#c89666',
     },

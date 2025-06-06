@@ -138,7 +138,7 @@ export const addJournal =
       dispatch(addJournalSuccess(newJournal));
       dispatch(journalsSlice.actions.journalsSuccess({ journals: updated }));
     } catch {
-      dispatch(addJournalFailure('Unable to add journal'));
+      dispatch(addJournalFailure('Не удалось добавить запись'));
     }
   };
 
@@ -148,7 +148,7 @@ export const getJournals = (): AppThunk => (dispatch) => {
     const journals = getLocalJournals();
     dispatch(journalsSuccess({ journals }));
   } catch (error) {
-    dispatch(journalsFailure('Unable to load journals'));
+    dispatch(journalsFailure('Не удалось загрузить записи'));
   }
 };
 

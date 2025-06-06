@@ -22,26 +22,26 @@ import {
 
 const validationSchema = Yup.object({
   title: Yup.string()
-    .required('A title is required')
-    .min(3, 'Should contain minimum of 8 characters')
-    .max(100, 'Should contain maximum of 100 characters'),
-  content: Yup.string().required("Content can't be blank"),
-  date: Yup.date().required('Date is required'),
-  mood: Yup.mixed<MoodEmojis>().required('Mood is required'),
+    .required('Требуется заголовок')
+    .min(3, 'Минимум 8 символов')
+    .max(100, 'Максимум 100 символов'),
+  content: Yup.string().required('Содержимое не может быть пустым'),
+  date: Yup.date().required('Дата обязательна'),
+  mood: Yup.mixed<MoodEmojis>().required('Необходимо выбрать настроение'),
 });
 
 const mood: MoodEmojis[] = [
   {
     icon: 'icomoon-free:happy2',
-    name: 'Happy',
+    name: 'Счастлив',
     value: 7,
   },
-  { icon: 'fluent-mdl2:sad-solid', name: 'Sad', value: 1 },
-  { icon: 'fa-solid:angry', name: 'Angry', value: 2 },
-  { icon: 'emojione-v1:anxious-face-with-sweat', name: 'Anxious', value: 3 },
-  { icon: 'twemoji:neutral-face', name: 'Neutral', value: 5 },
-  { icon: 'emojione-v1:confused-face', name: 'Confused', value: 4 },
-  { icon: 'icomoon-free:shocked2', name: 'Shocked', value: 6 },
+  { icon: 'fluent-mdl2:sad-solid', name: 'Грустно', value: 1 },
+  { icon: 'fa-solid:angry', name: 'Злость', value: 2 },
+  { icon: 'emojione-v1:anxious-face-with-sweat', name: 'Тревога', value: 3 },
+  { icon: 'twemoji:neutral-face', name: 'Нейтрально', value: 5 },
+  { icon: 'emojione-v1:confused-face', name: 'Смущение', value: 4 },
+  { icon: 'icomoon-free:shocked2', name: 'Шок', value: 6 },
 ];
 
 const NewEntry: FC = () => {
@@ -112,10 +112,10 @@ const NewEntry: FC = () => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
         <div className='sm:flex justify-between items-center mt-4'>
-          <p className='flex-1'>How are you feeling this day?</p>
+          <p className='flex-1'>Как вы себя чувствуете сегодня?</p>
           <InputDateField
             name='date'
-            placeholder='Select a date'
+            placeholder='Выберите дату'
             control={control as unknown as Control}
             hasError={errors.date}
             errorMessage={errors.date?.message}
@@ -170,7 +170,7 @@ const NewEntry: FC = () => {
         />
         <TextAreaField
           id='message'
-          placeholder='Say more about the day, how you feel.'
+          placeholder='Расскажите подробнее о дне и своих чувствах.'
           value={content}
           registration={{ ...register('content') }}
           errorMessage={errors.content?.message}
@@ -187,7 +187,7 @@ const NewEntry: FC = () => {
             )}
             onClick={handleSave}
           >
-            SAVE
+            СОХРАНИТЬ
           </button>
           <p
             className={clsx(
@@ -195,7 +195,7 @@ const NewEntry: FC = () => {
               showMessage ? 'opacity-100' : 'opacity-0'
             )}
           >
-            New entry saved
+            Новая запись сохранена
           </p>
         </div>
       </form>

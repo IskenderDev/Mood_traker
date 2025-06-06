@@ -13,13 +13,13 @@ import { toast } from 'sonner';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email('Wrong email format')
-    .required('Enter your email address'),
+    .email('Неверный формат электронной почты')
+    .required('Введите адрес электронной почты'),
   password: Yup.string()
-    .required('Enter your password')
+    .required('Введите пароль')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/,
-      'Password should contain 8 or more characters, at least a symbol, number, uppercase & lower case letters'
+      'Пароль должен содержать не менее 8 символов, включая символ, цифру, буквы верхнего и нижнего регистра'
     ),
 });
 
@@ -32,7 +32,7 @@ const Signin = () => {
 
   useEffect(() => {
     if (success) {
-      toast.success('Login successfull', { id: toastId });
+      toast.success('Вход выполнен успешно', { id: toastId });
     }
 
     setTimeout(() => {
@@ -74,7 +74,7 @@ const Signin = () => {
 
       <div className='container mx-auto max-w-lg max-h-[640px] bg-bg-800 sm:p-14 p-10 m-6 shadow-xl shadow-stone-500 overflow-y-scroll'>
         <h1 className='text-gray-400 text-lg text-center mb-14'>
-          EXISTING ACCOUNT
+          УЖЕ ЕСТЬ АККАУНТ
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
           <InputField
@@ -85,9 +85,9 @@ const Signin = () => {
               getValues('email') && !errors.email?.message ? 'success' : ''
             }
             errorMessage={errors.email?.message}
-            label='EMAIL ADDRESS'
+            label='АДРЕС ЭЛЕКТРОННОЙ ПОЧТЫ'
             labelClass='text-[#e7c1a3] mt-9'
-            placeholder='Enter your email'
+            placeholder='Введите вашу почту'
             isRequired
             className='bg-transparent border-b border-gray-400 mt-2'
           />
@@ -95,9 +95,9 @@ const Signin = () => {
             registration={{ ...register('password') }}
             type={showPassword ? 'text' : 'password'}
             control={control}
-            label='PASSWORD'
+            label='ПАРОЛЬ'
             labelClass='text-[#e7c1a3] mt-9'
-            placeholder='Enter your password'
+            placeholder='Введите пароль'
             valid={getValues('password') && !errors.password ? 'success' : ''}
             errorMessage={errors.password?.message}
             isRequired
@@ -108,16 +108,16 @@ const Signin = () => {
             type='submit'
             className='py-3 mb-5 mt-12 text-teal-100 font-semibold bg-slate-300 bg-opacity-50 hover:bg-cyan-500 hover:text-white w-full border rounded-3xl'
           >
-            LOGIN
+            ВОЙТИ
           </button>
         </form>
         <p className='text-gray-400 mt-2'>
-          Don't have an account? {'  '}
+          Нет аккаунта? {'  '}
           <Link
             to='/auth/signup'
             className='text-teal-100 hover:text-cyan-400 text-lg italic'
           >
-            Signup
+            Регистрация
           </Link>
         </p>
       </div>

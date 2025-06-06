@@ -2,17 +2,17 @@ import { ArticleValues } from '../types';
 
 export const articles: ArticleValues[] = [
   {
-    title: 'Mental Health Basics',
+    title: 'Основы психического здоровья',
     url: 'https://example.com/article1',
     urlToImage: null,
   },
   {
-    title: 'Practicing Daily Mindfulness',
+    title: 'Ежедневная практика осознанности',
     url: 'https://example.com/article2',
     urlToImage: null,
   },
   {
-    title: 'Understanding Mood Changes',
+    title: 'Понимание изменений настроения',
     url: 'https://example.com/article3',
     urlToImage: null,
   },
