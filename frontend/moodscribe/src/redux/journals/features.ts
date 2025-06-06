@@ -1,14 +1,18 @@
-import axios from 'axios';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { JournalItem, JournalValues } from '../../utils/types';
 import { AppThunk } from '../store';
-import { handleErrors } from '..';
-import { authHeader } from '../../axiosHelper/services/auth-header';
-import { baseUrlApi } from '../../axiosHelper';
+import { v4 as uuidv4 } from 'uuid';
 
-const base = axios.create({
-  baseURL: baseUrlApi,
-});
+const STORAGE_KEY = 'journals';
+
+const getLocalJournals = (): JournalItem[] => {
+  const data = localStorage.getItem(STORAGE_KEY);
+  return data ? JSON.parse(data) : [];
+};
+
+const saveJournals = (journals: JournalItem[]) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(journals));
+};
 
 // Add a Journal
 export interface Journal {
@@ -62,21 +66,6 @@ export const {
 } = addJournalSlice.actions;
 export const addJournalReducer = addJournalSlice.reducer;
 
-export const addJournal =
-  (journal: JournalItem): AppThunk =>
-  async (dispatch) => {
-    dispatch(addJournalStart());
-    try {
-      const response = await base.post<JournalItem>(
-        '/journal',
-        journal,
-        authHeader()
-      );
-      dispatch(addJournalSuccess(response.data));
-    } catch (error) {
-      dispatch(addJournalFailure(handleErrors(error)));
-    }
-  };
 
 // Get Journals
 export interface Journals {
@@ -86,7 +75,7 @@ export interface Journals {
   error: string;
 }
 const defaultJournal = {
-  journals: [],
+  journals: getLocalJournals(),
 };
 
 const JournalsInitialState: Journals = {
@@ -138,13 +127,28 @@ export const {
 } = journalsSlice.actions;
 export const journalsReducer = journalsSlice.reducer;
 
-export const getJournals = (): AppThunk => async (dispatch) => {
+export const addJournal =
+  (journal: JournalItem): AppThunk =>
+  (dispatch) => {
+    dispatch(addJournalStart());
+    try {
+      const newJournal = { ...journal, _id: uuidv4() };
+      const updated = [...getLocalJournals(), newJournal];
+      saveJournals(updated);
+      dispatch(addJournalSuccess(newJournal));
+      dispatch(journalsSlice.actions.journalsSuccess({ journals: updated }));
+    } catch {
+      dispatch(addJournalFailure('Unable to add journal'));
+    }
+  };
+
+export const getJournals = (): AppThunk => (dispatch) => {
   dispatch(journalsStart());
   try {
-    const response = await base.get('/journals', authHeader());
-    dispatch(journalsSuccess(response.data));
+    const journals = getLocalJournals();
+    dispatch(journalsSuccess({ journals }));
   } catch (error) {
-    dispatch(journalsFailure(handleErrors(error)));
+    dispatch(journalsFailure('Unable to load journals'));
   }
 };
 
@@ -190,12 +194,13 @@ export const deleteJournalReducer = deleteJournalSlice.reducer;
 
 export const deleteJournal =
   (id: string): AppThunk =>
-  async (dispatch) => {
+  (dispatch) => {
     try {
-      const response = await base.delete(`/journal/${id}`, authHeader());
-      dispatch(deleteJournalSuccess(response.data));
+      const journals = getLocalJournals().filter((j) => j._id !== id);
+      saveJournals(journals);
+      dispatch(deleteJournalSuccess());
       dispatch(journalsSlice.actions.deleteJournalSuccess(id));
     } catch (error) {
-      console.error('Failed to delete quote:', error);
+      console.error('Failed to delete journal:', error);
     }
   };
